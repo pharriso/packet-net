@@ -1,0 +1,6 @@
+---
+
+- hosts: pxe_server
+  connection: local
+  roles:
+  - packet-server

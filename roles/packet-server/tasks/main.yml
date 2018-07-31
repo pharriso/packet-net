@@ -1,0 +1,19 @@
+- name: Create Centos PXE server
+  packet_device:
+    hostnames: "{{ inventory_hostname }}"
+    operating_system: centos_7
+    plan: baremetal_1
+    facility: ams1
+    project_id: b5aee5c8-a56d-4220-9610-691286d21f28
+    wait_for_public_IPv: 4
+  register: newhosts
+  delegate_to: localhost
+
+- name: wait for server to build
+  wait_for:
+    delay: 1
+    host: "{{ item.public_ipv4 }}"
+    port: 22
+    state: started
+    timeout: 500
+  with_items: "{{ newhosts.devices }}"

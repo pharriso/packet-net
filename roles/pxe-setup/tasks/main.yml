@@ -1,0 +1,27 @@
+---
+
+- name: Install httpd
+  yum:
+    name: httpd
+    state: present
+
+- name: Start and enable httpd
+  service:
+    name: httpd
+    state: started
+    enabled: true
+
+- name: Create Directory for RHEL7 DVD
+  file:
+    path: /var/www/html/rhel7-dvd
+    state: directory
+
+- name: Create iPXE file
+  template:
+    src: packet.ipxe.j2
+    dest: /var/www/html/packet.ipxe
+
+- name: Create RHEL7 Kickstart file
+  template:
+    src: rhel7.ks.j2
+    dest: /var/www/html/rhel7.ks

@@ -1,0 +1,6 @@
+#!ipxe
+  
+dhcp
+kernel http://{{ ansible_default_ipv4.address }}/rhel7-dvd/images/pxeboot/vmlinuz inst.repo=http://{{ ansible_default_ipv4.address }}/rhel7-dvd inst.ks=http://{{ ansible_default_ipv4.address }}/rhel7.ks biosdevname=0 net.ifnames=0
+initrd http://{{ ansible_default_ipv4.address }}/rhel7-dvd/images/pxeboot/initrd.img
+boot

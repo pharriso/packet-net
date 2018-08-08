@@ -1,0 +1,13 @@
+---
+
+- hosts: localhost
+  #gather_facts: false
+  vars:
+    packet_servers: [pharriso-rhhi1,pharriso-rhhi2,pharriso-rhhi3]
+  roles:
+  - packet-rhel7-server
+
+#- hosts: pharriso-rhhi1:pharriso-rhhi2:pharriso:pharriso-rhhi3
+#  remote_user: root
+#  roles:
+#    - 

@@ -1,11 +1,15 @@
-- name: Create Centos PXE server
+- name: Create RHEL7 server using iPXE
   packet_device:
     hostnames: "{{ packet_servers }}"
-    operating_system: centos_7
+    operating_system: custom_ipxe
     plan: baremetal_1
     facility: ams1
     project_id: b5aee5c8-a56d-4220-9610-691286d21f28
     wait_for_public_IPv: 4
+    #ipxe_script_url: http://{{ pxe_server_ip }}/packet.ipxe
+    user_data: |
+      #!ipxe
+      chain -ar http://{{ pxe_server_ip }}/packet.ipxe
   register: newhosts
   delegate_to: localhost
 

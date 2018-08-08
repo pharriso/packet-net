@@ -1,6 +1,13 @@
 ---
 
-- hosts: pxe_server
-  connection: local
+- hosts: localhost
+  gather_facts: false
+  vars:
+    packet_servers: pharriso-pxe    
   roles:
   - packet-server
+
+- hosts: pharriso-pxe
+  remote_user: root
+  roles:
+    - pxe-setup

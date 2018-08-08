@@ -1,0 +1,60 @@
+install
+text
+network --device=bond0 --bondslaves=eth2 --bondopts=mode=802.3ad,xmit_hash_policy=layer2+3,miimon=200 --bootproto dhcp --noipv6
+url --url http://{{ ansible_default_ipv4.address }}/rhel7-dvd/
+lang en_US
+keyboard us
+zerombr
+clearpart --all
+bootloader --location mbr
+timezone --utc Europe/Amsterdam --ntpservers=time.apple.com
+auth --enablemd5 --enableshadow
+rootpw --iscrypted $1$ivgrSmn4$xOq3Gh9KZUwxpxNrfcgse.
+reboot
+firewall --enabled --service=ssh
+services --enabled=chronyd,sshd
+eula --agreed
+selinux --permissive
+skipx
+
+zerombr
+clearpart --drives=sda --all
+ignoredisk --only-use=sda
+part /boot --fstype=ext4 --size=500 --ondisk=sda
+part pv.01 --size=1000 --grow  --ondisk=sda
+part swap --size=4000
+volgroup vol0 pv.01
+logvol / --vgname=vol0 --name=rootVol --size=10000 --grow
+
+%packages
+@ base
+chrony
+vim
+nano
+screen
+wget
+libvirt
+qemu-kvm
+virt-manager
+virt-install
+libguestfs-tools
+libguestfs-xfs
+xorg-x11-apps
+xauth
+virt-viewer
+xorg-x11-fonts-*
+net-tools
+ntpdate
+mlocate
+%end
+
+
+%post --log=/root/ks-post.log
+
+mkdir -p /root/.ssh/
+cat << EOF > /root/.ssh/authorized_keys
+{{ ssh_key }}
+EOF
+chmod 600 /root/.ssh/authorized_keys
+
+%end
